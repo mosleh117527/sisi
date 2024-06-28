@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercise Tracker</title>
+    <script>
+        function fetchReport() {
+            fetch('/report')
+                .then(response => response.json())
+                .then(data => {
+                    let report = `
+                        <h2>Exercise Report</h2>
+                        <p>Total Reps: ${data['Total Reps']}</p>
+                        <p>Correct Reps: ${data['Correct Reps']}</p>
+                        <p>Incorrect Reps: ${data['Incorrect Reps']}</p>
+                        <p>Reason for Incorrect Reps:</p>
+                        <p>${data['Reason for Incorrect Reps'].replace(/\n/g, '<br>')}</p>
+                    `;
+                    document.getElementById('report').innerHTML = report;
+                })
+                .catch(error => console.error('Error fetching report:', error));
+        }
+    </script>
+</head>
+<body>
+    <h1>Exercise Tracker</h1>
+    <img src="{{ url_for('video_feed') }}" width="800" height="600">
+    <div>
+        <button onclick="fetchReport()">Get Exercise Report</button>
+    </div>
+    <div id="report"></div>
+</body>
+</html>
